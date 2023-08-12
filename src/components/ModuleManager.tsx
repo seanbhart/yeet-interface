@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Address, useContractRead } from "wagmi";
 
-import { AddModuleButton } from "./AddModuleButton";
+import { AddModule } from "./AddModule";
 import YJson from "../assets/Y.json";
 
 export const ModuleManager = ({
@@ -37,7 +37,7 @@ export const ModuleManager = ({
         <div style={{ width: "320px", marginTop: "30px" }}>
             {isLoading ? <div>Loading...</div> : null}
             {modules.length == 0 ? (
-                <AddModuleButton
+                <AddModule
                     address={address}
                     yContracts={yContracts}
                     showAlertWithText={showAlertWithText}

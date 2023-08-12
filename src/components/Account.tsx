@@ -28,7 +28,7 @@ export const Account = () => {
             {createdAlert != "" && (
                 <div>
                     <Alert onClose={() => setCreatedAlert("")}>
-                        You created a new Y account!
+                        {createdAlert}
                     </Alert>
                 </div>
             )}

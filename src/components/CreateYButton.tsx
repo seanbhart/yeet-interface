@@ -29,7 +29,6 @@ export const CreateYButton = ({
         },
         onSuccess(data) {
             console.log("CreateYButton| Success", JSON.stringify(data));
-            showAlertWithText("You created a new Y account!");
         },
     });
     const { isLoading, isSuccess, write } = useContractWrite(config);
@@ -46,6 +45,9 @@ export const CreateYButton = ({
     useEffect(() => {
         console.log(`CreateYButton| isLoading: ${isLoading}`);
         console.log(`CreateYButton| isSuccess: ${isSuccess}`);
+        if (isSuccess) {
+            showAlertWithText("You created a new Y account!");
+        }
     }, [isLoading, isSuccess]);
 
     return (

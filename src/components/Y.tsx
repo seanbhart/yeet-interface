@@ -11,10 +11,6 @@ import YFactoryJson from "../assets/YFactory.json";
 const YFactoryAddress = import.meta.env
     .VITE_Y_FACTORY_ADDRESS_OPTIMISM as Address;
 
-// type AddressProps = {
-//     address: Address;
-// };
-
 export const Y = ({
     address,
     showAlertWithText,
@@ -54,24 +50,6 @@ export const Y = ({
     }, [readData, readIsErrror, readIsLoading]);
 
     return (
-        // <div>
-        //     <div>
-        //         <div
-        //             style={{
-        //                 display: "flex",
-        //                 justifyContent: "center",
-        //                 fontSize: "20px",
-        //                 color: "#fff",
-        //                 margin: "20px",
-        //             }}
-        //         >
-        //             Read Data: {String(readData)}
-        //         </div>
-        //     </div>
-        //     <button onClick={() => write()}>write</button>
-        //     {isLoading && <div>Check Wallet</div>}
-        //     {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
-        // </div>
         <div style={{ width: "320px", marginTop: "30px" }}>
             <ModuleManager
                 address={address}
