@@ -49,17 +49,7 @@ function App() {
                 >
                     <div className="App">
                         <Header />
-                        <div
-                            style={{
-                                display: "flex",
-                                justifyContent: "space-between",
-                                // backgroundColor: "#000000",
-                            }}
-                        >
-                            <div></div>
-                            <Account />
-                            <div></div>
-                        </div>
+                        <Account />
                     </div>
                 </RainbowKitProvider>
             </WagmiConfig>

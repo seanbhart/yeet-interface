@@ -1,23 +1,28 @@
-import { useEffect } from "react";
-// import { useEffect, useState } from "react";
+// import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // import { Address, useContractWrite } from "wagmi";
+import { Address, useContractRead } from "wagmi";
 
-import { useContractRead, useContractWrite } from "wagmi";
-
-// import { CreateYButton } from "./CreateYButton";
-// import { Wall } from "./Wall";
+import { Wall } from "./Wall";
+import { CreateYButton } from "./CreateYButton";
+import { ModuleManager } from "./ModuleManager";
 import YFactoryJson from "../assets/YFactory.json";
-// import ERC20ABI from "../assets/ERC20ABI.json";
 
-const YFactoryAddress = "0xa2C4664F50DeBD78C2778Fc4BC09e350F74b736E";
+const YFactoryAddress = import.meta.env
+    .VITE_Y_FACTORY_ADDRESS_OPTIMISM as Address;
 
-type AddressString = `0x${string}`;
-type AddressProps = {
-    address: AddressString;
-};
+// type AddressProps = {
+//     address: Address;
+// };
 
-export const Y = ({ address }: AddressProps) => {
-    // const [yContracts, setYContracts] = useState<Address[]>([]);
+export const Y = ({
+    address,
+    showAlertWithText,
+}: {
+    address: Address;
+    showAlertWithText: (text: string) => void;
+}) => {
+    const [yContracts, setYContracts] = useState<Address[]>([]);
 
     const {
         data: readData,
@@ -28,100 +33,63 @@ export const Y = ({ address }: AddressProps) => {
         abi: YFactoryJson.abi,
         functionName: "getMy",
         account: address,
-    });
-
-    const { data, isLoading, isSuccess, write } = useContractWrite({
-        address: YFactoryAddress,
-        abi: YFactoryJson.abi,
-        functionName: "create",
         onError(error) {
-            console.log("Error", error);
-        },
-        onMutate({ args }) {
-            console.log("Mutate", { args });
+            console.log("Y| Error", error);
         },
         onSettled(data, error) {
-            console.log("Settled", { data, error });
+            console.log("Y| Settled", { data, error });
         },
         onSuccess(data) {
-            console.log("Success", data);
+            console.log("Y| Success", data);
+            setYContracts(readData as Address[]);
         },
     });
-
-    // // ERC20 TESTS
-    // const {
-    //     data: readData,
-    //     isError: readIsErrror,
-    //     isLoading: readIsLoading,
-    // } = useContractRead({
-    //     address: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
-    //     abi: ERC20ABI,
-    //     functionName: "balanceOf",
-    //     args: [address],
-    // });
-
-    // const { data, isLoading, isSuccess, write } = useContractWrite({
-    //     address: "0x7F5c764cBc14f9669B88837ca1490cCa17c31607",
-    //     abi: ERC20ABI,
-    //     functionName: "transfer",
-    //     args: [address, "50000"],
-    //     onError(error) {
-    //         console.log("Error", error);
-    //     },
-    //     onMutate({ args }) {
-    //         console.log("Mutate", { args });
-    //     },
-    //     onSettled(data, error) {
-    //         console.log("Settled", { data, error });
-    //     },
-    //     onSuccess(data) {
-    //         console.log("Success", data);
-    //     },
-    // });
-
     useEffect(() => {
+        if (Array.isArray(readData)) {
+            console.log(`Y| readData array: ${readData[0]}`);
+        }
         console.log(`Y| readData: ${readData}`);
         console.log(`Y| readIsErrror: ${readIsErrror}`);
         console.log(`Y| readIsLoading: ${readIsLoading}`);
-
-        console.log(`Y| isLoading: ${isLoading}`);
-        console.log(`Y| data: ${data}`);
-        console.log(`Y| isSuccess: ${isSuccess}`);
-        // setYContracts(data as Address[]);
-    }, [readData, readIsErrror, readIsLoading, isLoading, data, isSuccess]);
+    }, [readData, readIsErrror, readIsLoading]);
 
     return (
-        <div>
-            <div>
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "center",
-                        fontSize: "20px",
-                        color: "#fff",
-                        margin: "20px",
-                    }}
-                >
-                    Read Data: {String(readData)}
-                </div>
-            </div>
-            <button onClick={() => write()}>write</button>
-            {isLoading && <div>Check Wallet</div>}
-            {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
-        </div>
-        // <div style={{ width: "320px", marginTop: "30px" }}>
-        //     {/* <Wall {...yContracts} /> */}
-        //     {data == null || (
+        // <div>
+        //     <div>
         //         <div
         //             style={{
         //                 display: "flex",
         //                 justifyContent: "center",
-        //                 // backgroundColor: "#fff",
+        //                 fontSize: "20px",
+        //                 color: "#fff",
+        //                 margin: "20px",
         //             }}
         //         >
-        //             {/* <CreateYButton {...yContracts} /> */}
+        //             Read Data: {String(readData)}
         //         </div>
-        //     )}
+        //     </div>
+        //     <button onClick={() => write()}>write</button>
+        //     {isLoading && <div>Check Wallet</div>}
+        //     {isSuccess && <div>Transaction: {JSON.stringify(data)}</div>}
         // </div>
+        <div style={{ width: "320px", marginTop: "30px" }}>
+            <ModuleManager
+                address={address}
+                yContracts={yContracts}
+                showAlertWithText={showAlertWithText}
+            />
+            <Wall address={address} yContracts={yContracts} />
+            {yContracts.length > 0 || (
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        // backgroundColor: "#fff",
+                    }}
+                >
+                    <CreateYButton showAlertWithText={showAlertWithText} />
+                </div>
+            )}
+        </div>
     );
 };

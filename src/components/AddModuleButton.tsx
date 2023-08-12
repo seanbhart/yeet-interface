@@ -1,51 +1,54 @@
 import { useEffect } from "react";
 import { Address, useContractWrite, usePrepareContractWrite } from "wagmi";
 
-import YFactoryJson from "../assets/YFactory.json";
+import YJson from "../assets/Y.json";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
-const YFactoryAddress = import.meta.env
-    .VITE_Y_FACTORY_ADDRESS_OPTIMISM as Address;
+const YoAddress = import.meta.env.VITE_YO_ADDRESS_OPTIMISM as Address;
 
-export const CreateYButton = ({
+export const AddModuleButton = ({
+    address,
+    yContracts,
     showAlertWithText,
 }: {
+    address: Address;
+    yContracts: Address[];
     showAlertWithText: (text: string) => void;
 }) => {
-    console.log(
-        `CreateYButton| YFactoryAddress: ${JSON.stringify(YFactoryAddress)}`
-    );
+    console.log(`AddModuleButton| address: ${JSON.stringify(address)}`);
+    console.log(`AddModuleButton| yContracts: ${JSON.stringify(yContracts)}`);
 
     const { config } = usePrepareContractWrite({
-        address: YFactoryAddress,
-        abi: YFactoryJson.abi,
-        functionName: "create",
+        address: yContracts[0],
+        abi: YJson.abi,
+        functionName: "addModule",
+        args: [YoAddress],
         onError(error) {
-            console.log("CreateYButton| Error", error);
+            console.log("AddModuleButton| Error", error);
         },
         onSettled(data, error) {
-            console.log("CreateYButton| Settled", { data, error });
+            console.log("AddModuleButton| Settled", { data, error });
         },
         onSuccess(data) {
-            console.log("CreateYButton| Success", JSON.stringify(data));
-            showAlertWithText("You created a new Y account!");
+            console.log("AddModuleButton| Success", JSON.stringify(data));
+            showAlertWithText("You added a module!");
         },
     });
     const { isLoading, isSuccess, write } = useContractWrite(config);
 
     const handleClick = async () => {
-        console.log("CreateYButton| create clicked");
-        console.log(`CreateYButton| isLoading: ${isLoading}`);
-        console.log(`CreateYButton| isSuccess: ${isSuccess}`);
+        console.log("AddModuleButton| create clicked");
+        console.log(`AddModuleButton| isLoading: ${isLoading}`);
+        console.log(`AddModuleButton| isSuccess: ${isSuccess}`);
         if (write) {
             write();
         }
     };
 
     useEffect(() => {
-        console.log(`CreateYButton| isLoading: ${isLoading}`);
-        console.log(`CreateYButton| isSuccess: ${isSuccess}`);
+        console.log(`AddModuleButton| isLoading: ${isLoading}`);
+        console.log(`AddModuleButton| isSuccess: ${isSuccess}`);
     }, [isLoading, isSuccess]);
 
     return (
@@ -64,7 +67,7 @@ export const CreateYButton = ({
             }}
             onClick={handleClick}
         >
-            CREATE ACCOUNT
+            ADD MODULE
         </Button>
     );
 };

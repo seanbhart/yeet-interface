@@ -1,36 +1,44 @@
-import { useEffect, useState } from "react";
-import { Address, useContractWrite, usePrepareContractWrite } from "wagmi";
+import { useState } from "react";
+import { Address, useContractRead } from "wagmi";
 
 import YJson from "../assets/Y.json";
 
-export const Wall = (yContractAddress: Address[]) => {
-    console.log(`Wall| yContractAddress: ${JSON.stringify(yContractAddress)}`);
+export const Wall = ({
+    address,
+    yContracts,
+}: {
+    address: Address;
+    yContracts: Address[];
+}) => {
+    console.log(`Wall| yContractAddress: ${JSON.stringify(yContracts)}`);
     const earliestTimestamp = 1234567890;
     const [wall, setWall] = useState("");
 
-    const { config } = usePrepareContractWrite({
-        address: yContractAddress[0],
+    const { isLoading } = useContractRead({
+        address: yContracts[0],
         abi: YJson.abi,
         functionName: "walls",
         args: [earliestTimestamp],
+        account: address,
+        onError(error) {
+            console.log("Wall| Error", error);
+        },
+        onSettled(data, error) {
+            console.log("Wall| Settled", { data, error });
+        },
+        onSuccess(data) {
+            console.log("Wall| Success", data);
+            setWall(data as string);
+        },
     });
-    const { data, isLoading, isSuccess, write } = useContractWrite(config);
-    if (write) {
-        write();
-    }
-
-    useEffect(() => {
-        console.log(`Wall| isLoading: ${isLoading}`);
-        console.log(`Wall| isSuccess: ${isSuccess}`);
-        console.log(`Wall| data: ${data}`);
-        if (data) {
-            setWall(data.toString());
-        }
-    }, [data]);
 
     return (
         <div style={{ width: "320px", marginTop: "30px" }}>
-            <div dangerouslySetInnerHTML={{ __html: wall }} />
+            {isLoading ? (
+                <div>Loading...</div>
+            ) : (
+                <div dangerouslySetInnerHTML={{ __html: wall }} />
+            )}
         </div>
     );
 };
