@@ -1,65 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Tweet Component</title>
-    </head>
-    <body>
+<div
+    style="
+        /* border: 1px solid #666; */
+        width: 360px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+        font-family: Lucida Sans, sans-serif;
+        display: flex;
+        background-color: #111;
+    "
+>
+    <div style="flex: 1; padding-right: 10px">
+        <img
+            src="https://placekitten.com/48/48"
+            alt="Profile Picture"
+            style="
+                width: 64px;
+                height: 64px;
+                box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+            "
+        />
         <div
             style="
-                border: 1px solid #666;
-                width: 500px;
-                padding: 10px;
-                font-family: Arial, sans-serif;
+                color: #666;
+                font-size: 12px;
+                margin-top: 8px;
+                width: 64px;
                 display: flex;
+                justify-content: space-between;
+                overflow: hidden;
             "
         >
-            <div style="flex: 1; padding-right: 10px">
-                <img
-                    src="https://placekitten.com/48/48"
-                    alt="Profile Picture"
-                    style="
-                        width: 64px;
-                        height: 64px;
-                        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-                    "
-                />
-                <div style="color: #657786; font-size: 12px; margin-top: 8px">
-                    <a style="color: inherit" href="http://..."
-                        >0xbf3...f3kde</a
-                    >
-                </div>
+            <div
+                style="
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: clip;
+                    text-align: left;
+                    width: 26px;
+                "
+            >
+                0xF863B06A73845d19F0972af747358F60d80A442C
             </div>
-            <div style="flex: 5">
-                <div
-                    style="
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                    "
-                >
-                    <div>
-                        <div style="font-weight: bold; color: #666">
-                            randomerror.eth
-                        </div>
-                    </div>
-                    <div style="color: #65778699; font-size: 12px">2m ago</div>
-                </div>
-                <div
-                    style="
-                        margin-top: 10px;
-                        color: #fff;
-                        display: flex;
-                        justify-content: left;
-                        text-align: left;
-                    "
-                >
-                    Wow so excite! I love the world computer. I can do anything.
-                    Remember when you had to ask permission to post things and
-                    platforms arbitrary blocked you. Not anymore!
-                </div>
+            <div style="white-space: nowrap; overflow: show; font-size: 12px">
+                ...
+            </div>
+            <div
+                style="
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: clip;
+                    text-align: right;
+                    direction: rtl;
+                    width: 28px;
+                "
+            >
+                0xF863B06A73845d19F0972af747358F60d80A442C
             </div>
         </div>
-    </body>
-</html>
+    </div>
+    <div style="flex: 5; margin-left: 10px">
+        <div
+            style="
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+            "
+        >
+            <div>
+                <div style="font-weight: bold; color: #666">
+                    randomerror.eth
+                </div>
+            </div>
+            <div id="yeet-timestamp" style="color: #999; font-size: 12px">
+                1691899001
+            </div>
+        </div>
+        <div
+            id="yeet-text"
+            style="
+                margin-top: 10px;
+                font-size: 14px;
+                color: #999;
+                display: flex;
+                justify-content: left;
+                text-align: left;
+            "
+        >
+            Wow so excite! I love the world computer. I can do anything.
+            Remember when you had to ask permission to post things and platforms
+            arbitrary blocked you. Not anymore!
+        </div>
+    </div>
+</div>

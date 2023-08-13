@@ -5,6 +5,7 @@ import { useAccount, Address } from "wagmi";
 import { createPublicClient, http } from "viem";
 import { createWalletClient, custom } from "viem";
 import { optimism } from "viem/chains";
+import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 
 import YJson from "../assets/Y.json";
 import YoJson from "../assets/Yo.json";
@@ -75,7 +76,7 @@ export const InputYo = ({
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 multiline
-                rows={5}
+                rows={3}
                 fullWidth
                 placeholder="What's happening?"
                 variant="outlined"
@@ -85,7 +86,7 @@ export const InputYo = ({
                     color: "white",
                     padding: "0px",
                     width: "100%",
-                    height: "140px",
+                    height: "100px",
                     bgcolor: "black",
                     "& .MuiOutlinedInput-input": {
                         color: "white",
@@ -111,16 +112,20 @@ export const InputYo = ({
             />
             <Button
                 onClick={handleClick}
-                variant="outlined"
+                variant="contained"
                 color="primary"
+                endIcon={<TrendingFlatIcon />}
                 sx={{
-                    marginTop: "12px",
+                    marginTop: "10px",
                     marginRight: "0px",
                     // width: "80px",
                     // marginLeft: "auto",
-                    backgroundColor: "transparent",
+                    backgroundColor: "white",
                     borderColor: "#ffffff",
-                    color: "white",
+                    color: "black",
+                    fontWeight: "bold",
+                    textTransform: "none",
+                    maxWidth: "100px",
                     "&:hover": {
                         backgroundColor: "#ffffff",
                         borderColor: "#ffffff",

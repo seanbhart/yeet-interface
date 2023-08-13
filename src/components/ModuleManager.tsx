@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Address, useContractRead } from "wagmi";
 
 import { AddModule } from "./AddModule";
@@ -8,30 +8,33 @@ export const ModuleManager = ({
     address,
     yContracts,
     showAlertWithText,
+    forceRefresh,
 }: {
     address: Address;
     yContracts: Address[];
     showAlertWithText: (text: string) => void;
+    forceRefresh: number;
 }) => {
     const [modules, setModules] = useState([] as Address[]);
-    console.log(`ModuleManager| modules length: ${modules.length}`);
+    // console.log(`ModuleManager| yContracts: ${yContracts}`);
+    // console.log(`ModuleManager| modules length: ${modules.length}`);
 
     const { isLoading } = useContractRead({
         address: yContracts[0],
         abi: YJson.abi,
         functionName: "getModules",
         account: address,
+        watch: true,
         onError(error) {
             console.log("ModuleManager| Error", error);
-        },
-        onSettled(data, error) {
-            console.log("ModuleManager| Settled", { data, error });
         },
         onSuccess(data) {
             console.log("ModuleManager| Success", data);
             setModules(data as Address[]);
         },
     });
+
+    useEffect(() => {}, [modules, forceRefresh]);
 
     return (
         <div style={{ width: "360px", marginTop: "30px" }}>
@@ -69,6 +72,7 @@ export const ModuleManager = ({
                 address={address}
                 yContracts={yContracts}
                 showAlertWithText={showAlertWithText}
+                forceRefresh={forceRefresh}
             />
         </div>
     );

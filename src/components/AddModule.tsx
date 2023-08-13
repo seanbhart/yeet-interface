@@ -13,13 +13,15 @@ export const AddModule = ({
     address,
     yContracts,
     showAlertWithText,
+    forceRefresh,
 }: {
     address: Address;
     yContracts: Address[];
     showAlertWithText: (text: string) => void;
+    forceRefresh: number;
 }) => {
-    console.log(`AddModule| address: ${JSON.stringify(address)}`);
-    console.log(`AddModule| yContracts: ${JSON.stringify(yContracts)}`);
+    // console.log(`AddModule| address: ${JSON.stringify(address)}`);
+    // console.log(`AddModule| yContracts: ${JSON.stringify(yContracts)}`);
     const [moduleAddress, setModuleAddress] = useState("");
 
     const { config } = usePrepareContractWrite({
@@ -52,13 +54,13 @@ export const AddModule = ({
     };
 
     useEffect(() => {
-        console.log(`AddModule| isLoading: ${isLoading}`);
-        console.log(`AddModule| isSuccess: ${isSuccess}`);
-        console.log(`AddModule| data: ${JSON.stringify(data)}`);
+        // console.log(`AddModule| isLoading: ${isLoading}`);
+        // console.log(`AddModule| isSuccess: ${isSuccess}`);
+        // console.log(`AddModule| data: ${JSON.stringify(data)}`);
         if (isSuccess) {
             showAlertWithText("You added a module!");
         }
-    }, [isLoading, isSuccess, data]);
+    }, [isLoading, isSuccess, data, forceRefresh]);
 
     return (
         <div
@@ -106,12 +108,16 @@ export const AddModule = ({
             />
 
             <Button
-                startIcon={<AddIcon />}
+                endIcon={<AddIcon />}
                 variant="outlined"
                 size="large"
                 sx={{
                     color: "#ffffff",
+                    fontWeight: "bold",
                     borderColor: "#ffffff",
+                    textTransform: "none",
+                    maxWidth: "100px",
+                    height: "40px",
                     "&:hover": {
                         backgroundColor: "#ffffff",
                         borderColor: "#ffffff",
@@ -120,7 +126,7 @@ export const AddModule = ({
                 }}
                 onClick={handleClick}
             >
-                ADD MODULE
+                Add
             </Button>
         </div>
     );

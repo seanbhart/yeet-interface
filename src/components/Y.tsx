@@ -14,11 +14,14 @@ const YFactoryAddress = import.meta.env
 export const Y = ({
     address,
     showAlertWithText,
+    forceRefresh,
 }: {
     address: Address;
     showAlertWithText: (text: string) => void;
+    forceRefresh: number;
 }) => {
     const [yContracts, setYContracts] = useState<Address[]>([]);
+    // console.log(`Y| YFactoryAddress: ${YFactoryAddress}`);
 
     const {
         data: readData,
@@ -29,11 +32,9 @@ export const Y = ({
         abi: YFactoryJson.abi,
         functionName: "getMy",
         account: address,
+        watch: true,
         onError(error) {
             console.log("Y| Error", error);
-        },
-        onSettled(data, error) {
-            console.log("Y| Settled", { data, error });
         },
         onSuccess(data) {
             console.log("Y| Success", data);
@@ -44,13 +45,13 @@ export const Y = ({
         if (Array.isArray(readData)) {
             console.log(`Y| readData array: ${readData[0]}`);
         }
-        console.log(`Y| readData: ${readData}`);
-        console.log(`Y| readIsErrror: ${readIsErrror}`);
-        console.log(`Y| readIsLoading: ${readIsLoading}`);
-    }, [readData, readIsErrror, readIsLoading]);
+        // console.log(`Y| readData: ${readData}`);
+        // console.log(`Y| readIsErrror: ${readIsErrror}`);
+        // console.log(`Y| readIsLoading: ${readIsLoading}`);
+    }, [readData, readIsErrror, readIsLoading, forceRefresh]);
 
     return (
-        <div style={{ width: "360px", marginTop: "30px" }}>
+        <div>
             {yContracts.length == 0 ? (
                 <div
                     style={{
@@ -72,6 +73,7 @@ export const Y = ({
                         address={address}
                         yContracts={yContracts}
                         showAlertWithText={showAlertWithText}
+                        forceRefresh={forceRefresh}
                     />
                 </div>
             )}

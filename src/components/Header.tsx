@@ -6,20 +6,20 @@ export function Header() {
             style={{
                 display: "flex",
                 justifyContent: "space-between",
-                backgroundColor: "#111111",
+                backgroundColor: "#000",
             }}
         >
             <div style={{ display: "flex", alignItems: "center" }}>
                 <div
                     style={{
                         color: "#fff",
-                        fontSize: "80px",
+                        fontSize: "60px",
                         marginLeft: "20px",
                     }}
                 >
                     𝕐
                 </div>
-                <div
+                {/* <div
                     style={{
                         color: "#fff",
                         fontSize: "40px",
@@ -29,7 +29,7 @@ export function Header() {
                     }}
                 >
                     Protocol
-                </div>
+                </div> */}
             </div>
             <div
                 style={{

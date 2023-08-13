@@ -7,16 +7,18 @@ import Alert from "@mui/material/Alert";
 export const Account = () => {
     const { address, isConnecting, isDisconnected } = useAccount();
     const [createdAlert, setCreatedAlert] = useState("");
+    const [forceRefresh, setForceRefresh] = useState(0);
 
     const showAlertWithText = (text: string) => {
-        console.log("Y| A new Y contract was created");
+        console.log(`Account| showAlertWithText: ${text}`);
         setCreatedAlert(text);
+        // setForceRefresh(forceRefresh + 1);
     };
 
     useEffect(() => {
-        console.log(`Account| address: ${address}`);
-        console.log(`Account| isConnecting: ${isConnecting}`);
-        console.log(`Account| isDisconnected: ${isDisconnected}`);
+        // console.log(`Account| address: ${address}`);
+        // console.log(`Account| isConnecting: ${isConnecting}`);
+        // console.log(`Account| isDisconnected: ${isDisconnected}`);
     }, [address, isConnecting, isDisconnected]);
 
     return (
@@ -45,6 +47,7 @@ export const Account = () => {
                         <Y
                             address={address}
                             showAlertWithText={showAlertWithText}
+                            forceRefresh={forceRefresh}
                         />
                     )}
                 </div>

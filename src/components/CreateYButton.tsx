@@ -43,8 +43,8 @@ export const CreateYButton = ({
     };
 
     useEffect(() => {
-        console.log(`CreateYButton| isLoading: ${isLoading}`);
-        console.log(`CreateYButton| isSuccess: ${isSuccess}`);
+        // console.log(`CreateYButton| isLoading: ${isLoading}`);
+        // console.log(`CreateYButton| isSuccess: ${isSuccess}`);
         if (isSuccess) {
             showAlertWithText("You created a new Y account!");
         }
