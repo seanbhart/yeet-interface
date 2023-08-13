@@ -13,12 +13,10 @@ export const AddModule = ({
     address,
     yContracts,
     showAlertWithText,
-    forceRefresh,
 }: {
     address: Address;
     yContracts: Address[];
     showAlertWithText: (text: string) => void;
-    forceRefresh: number;
 }) => {
     // console.log(`AddModule| address: ${JSON.stringify(address)}`);
     // console.log(`AddModule| yContracts: ${JSON.stringify(yContracts)}`);
@@ -60,7 +58,7 @@ export const AddModule = ({
         if (isSuccess) {
             showAlertWithText("You added a module!");
         }
-    }, [isLoading, isSuccess, data, forceRefresh]);
+    }, [isLoading, isSuccess, data, address]);
 
     return (
         <div
@@ -82,27 +80,27 @@ export const AddModule = ({
                 spellCheck={false}
                 color="primary"
                 sx={{
-                    color: "white",
+                    color: "#888",
                     bgcolor: "black",
                     "& .MuiOutlinedInput-input": {
-                        color: "white",
+                        color: "#888",
                     },
                     "& .MuiOutlinedInput-root": {
                         "& fieldset": {
-                            borderColor: "white",
+                            borderColor: "#888",
                         },
                         "&:hover fieldset": {
-                            borderColor: "white",
+                            borderColor: "#888",
                         },
                         "&.Mui-focused fieldset": {
-                            borderColor: "white",
+                            borderColor: "#888",
                         },
                     },
                     "& .MuiInputLabel-root": {
-                        color: "white",
+                        color: "#888",
                     },
                     "& .MuiInputLabel-root.Mui-focused": {
-                        color: "white",
+                        color: "#888",
                     },
                 }}
             />
@@ -112,15 +110,15 @@ export const AddModule = ({
                 variant="outlined"
                 size="large"
                 sx={{
-                    color: "#ffffff",
+                    color: "#888",
                     fontWeight: "bold",
-                    borderColor: "#ffffff",
+                    borderColor: "#888",
                     textTransform: "none",
                     maxWidth: "100px",
                     height: "40px",
                     "&:hover": {
-                        backgroundColor: "#ffffff",
-                        borderColor: "#ffffff",
+                        backgroundColor: "#888",
+                        borderColor: "#888",
                         color: "#000",
                     },
                 }}

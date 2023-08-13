@@ -7,7 +7,6 @@ import Alert from "@mui/material/Alert";
 export const Account = () => {
     const { address, isConnecting, isDisconnected } = useAccount();
     const [createdAlert, setCreatedAlert] = useState("");
-    const [forceRefresh, setForceRefresh] = useState(0);
 
     const showAlertWithText = (text: string) => {
         console.log(`Account| showAlertWithText: ${text}`);
@@ -25,11 +24,17 @@ export const Account = () => {
         <div
             style={{
                 color: "#fff",
+                marginTop: "50px",
             }}
         >
             {createdAlert != "" && (
                 <div>
-                    <Alert onClose={() => setCreatedAlert("")}>
+                    <Alert
+                        style={{
+                            marginTop: "100px",
+                        }}
+                        onClose={() => setCreatedAlert("")}
+                    >
                         {createdAlert}
                     </Alert>
                 </div>
@@ -47,7 +52,6 @@ export const Account = () => {
                         <Y
                             address={address}
                             showAlertWithText={showAlertWithText}
-                            forceRefresh={forceRefresh}
                         />
                     )}
                 </div>

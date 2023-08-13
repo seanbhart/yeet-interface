@@ -1,6 +1,5 @@
 // import { useEffect } from "react";
 import { useState } from "react";
-import "wagmi/window";
 import { useAccount, Address } from "wagmi";
 import { createPublicClient, http } from "viem";
 import { createWalletClient, custom } from "viem";
@@ -83,30 +82,30 @@ export const InputYo = ({
                 autoComplete="off"
                 sx={{
                     backgroundColor: "transparent",
-                    color: "white",
+                    color: "#888",
                     padding: "0px",
                     width: "100%",
                     height: "100px",
                     bgcolor: "black",
                     "& .MuiOutlinedInput-input": {
-                        color: "white",
+                        color: "#888",
                     },
                     "& .MuiOutlinedInput-root": {
                         "& fieldset": {
-                            borderColor: "white",
+                            borderColor: "#888",
                         },
                         "&:hover fieldset": {
-                            borderColor: "white",
+                            borderColor: "#888",
                         },
                         "&.Mui-focused fieldset": {
-                            borderColor: "white",
+                            borderColor: "#888",
                         },
                     },
                     "& .MuiInputLabel-root": {
-                        color: "white",
+                        color: "#888",
                     },
                     "& .MuiInputLabel-root.Mui-focused": {
-                        color: "white",
+                        color: "#888",
                     },
                 }}
             />
@@ -120,15 +119,15 @@ export const InputYo = ({
                     marginRight: "0px",
                     // width: "80px",
                     // marginLeft: "auto",
-                    backgroundColor: "white",
-                    borderColor: "#ffffff",
+                    backgroundColor: "#888",
+                    borderColor: "#888",
                     color: "black",
                     fontWeight: "bold",
                     textTransform: "none",
                     maxWidth: "100px",
                     "&:hover": {
-                        backgroundColor: "#ffffff",
-                        borderColor: "#ffffff",
+                        backgroundColor: "#888",
+                        borderColor: "#888",
                         color: "#000",
                     },
                 }}

@@ -8,12 +8,10 @@ export const ModuleManager = ({
     address,
     yContracts,
     showAlertWithText,
-    forceRefresh,
 }: {
     address: Address;
     yContracts: Address[];
     showAlertWithText: (text: string) => void;
-    forceRefresh: number;
 }) => {
     const [modules, setModules] = useState([] as Address[]);
     // console.log(`ModuleManager| yContracts: ${yContracts}`);
@@ -34,7 +32,7 @@ export const ModuleManager = ({
         },
     });
 
-    useEffect(() => {}, [modules, forceRefresh]);
+    useEffect(() => {}, [modules]);
 
     return (
         <div style={{ width: "360px", marginTop: "30px" }}>
@@ -51,6 +49,7 @@ export const ModuleManager = ({
                             justifyContent: "center",
                             fontSize: "30px",
                             marginBottom: "10px",
+                            color: "#888",
                         }}
                     >
                         Modules
@@ -60,6 +59,7 @@ export const ModuleManager = ({
                             display: "flex",
                             justifyContent: "center",
                             fontSize: "12px",
+                            color: "#888",
                         }}
                     >
                         {modules.map((moduleAddress, index) => (
@@ -72,7 +72,6 @@ export const ModuleManager = ({
                 address={address}
                 yContracts={yContracts}
                 showAlertWithText={showAlertWithText}
-                forceRefresh={forceRefresh}
             />
         </div>
     );

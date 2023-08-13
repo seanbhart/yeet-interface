@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Address, useContractRead } from "wagmi";
 
 import { Wall } from "./Wall";
+import { YHeader } from "./YHeader";
 import { CreateYButton } from "./CreateYButton";
 import { ModuleManager } from "./ModuleManager";
 import YFactoryJson from "../assets/YFactory.json";
@@ -14,14 +15,11 @@ const YFactoryAddress = import.meta.env
 export const Y = ({
     address,
     showAlertWithText,
-    forceRefresh,
 }: {
     address: Address;
     showAlertWithText: (text: string) => void;
-    forceRefresh: number;
 }) => {
     const [yContracts, setYContracts] = useState<Address[]>([]);
-    // console.log(`Y| YFactoryAddress: ${YFactoryAddress}`);
 
     const {
         data: readData,
@@ -41,14 +39,7 @@ export const Y = ({
             setYContracts(readData as Address[]);
         },
     });
-    useEffect(() => {
-        if (Array.isArray(readData)) {
-            console.log(`Y| readData array: ${readData[0]}`);
-        }
-        // console.log(`Y| readData: ${readData}`);
-        // console.log(`Y| readIsErrror: ${readIsErrror}`);
-        // console.log(`Y| readIsLoading: ${readIsLoading}`);
-    }, [readData, readIsErrror, readIsLoading, forceRefresh]);
+    useEffect(() => {}, [readData, readIsErrror, readIsLoading]);
 
     return (
         <div>
@@ -57,13 +48,14 @@ export const Y = ({
                     style={{
                         display: "flex",
                         justifyContent: "center",
-                        // backgroundColor: "#fff",
+                        marginTop: "50px",
                     }}
                 >
                     <CreateYButton showAlertWithText={showAlertWithText} />
                 </div>
             ) : (
-                <div>
+                <div style={{ marginTop: "50px", marginBottom: "100px" }}>
+                    <YHeader address={address} yAddress={yContracts[0]} />
                     <Wall
                         address={address}
                         yContracts={yContracts}
@@ -73,7 +65,6 @@ export const Y = ({
                         address={address}
                         yContracts={yContracts}
                         showAlertWithText={showAlertWithText}
-                        forceRefresh={forceRefresh}
                     />
                 </div>
             )}

@@ -7,6 +7,10 @@ export function Header() {
                 display: "flex",
                 justifyContent: "space-between",
                 backgroundColor: "#000",
+                position: "fixed",
+                top: 0,
+                width: "100%",
+                zIndex: 100,
             }}
         >
             <div style={{ display: "flex", alignItems: "center" }}>
