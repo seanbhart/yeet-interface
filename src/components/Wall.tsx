@@ -1,18 +1,26 @@
+// import { useEffect } from "react";
 import { useState } from "react";
 import { Address, useContractRead } from "wagmi";
 
+import { InputYo } from "./InputYo";
 import YJson from "../assets/Y.json";
+// import * as yeet from "../assets/yeet.html";
+
+const YoAddress = import.meta.env.VITE_YO_ADDRESS_OPTIMISM as Address;
 
 export const Wall = ({
     address,
     yContracts,
+    showAlertWithText,
 }: {
     address: Address;
     yContracts: Address[];
+    showAlertWithText: (text: string) => void;
 }) => {
     console.log(`Wall| yContractAddress: ${JSON.stringify(yContracts)}`);
     const earliestTimestamp = 1234567890;
     const [wall, setWall] = useState("");
+    // const [htmlContent, setHtmlContent] = useState("");
 
     const { isLoading } = useContractRead({
         address: yContracts[0],
@@ -32,12 +40,33 @@ export const Wall = ({
         },
     });
 
+    // useEffect(() => {
+    //     fetch("./src/assets/yo-input.html")
+    //         .then((response) => response.text())
+    //         .then((data) => setHtmlContent(data));
+    // }, []);
+
     return (
-        <div style={{ width: "320px", marginTop: "30px" }}>
+        <div style={{ width: "360px", marginTop: "30px" }}>
+            {/* <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div> */}
+            <InputYo
+                address={address}
+                yAddress={yContracts[0]}
+                yoAddress={YoAddress}
+                showAlertWithText={showAlertWithText}
+            />
             {isLoading ? (
                 <div>Loading...</div>
             ) : (
-                <div dangerouslySetInnerHTML={{ __html: wall }} />
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: "50px",
+                        marginBottom: "50px",
+                    }}
+                    dangerouslySetInnerHTML={{ __html: wall }}
+                />
             )}
         </div>
     );

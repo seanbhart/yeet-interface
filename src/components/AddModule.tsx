@@ -61,7 +61,12 @@ export const AddModule = ({
     }, [isLoading, isSuccess, data]);
 
     return (
-        <div>
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+            }}
+        >
             <TextField
                 fullWidth
                 id="outlined-basic"

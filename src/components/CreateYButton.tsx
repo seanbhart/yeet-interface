@@ -51,22 +51,29 @@ export const CreateYButton = ({
     }, [isLoading, isSuccess]);
 
     return (
-        <Button
-            startIcon={<AddIcon />}
-            variant="outlined"
-            size="large"
-            sx={{
-                color: "#ffffff",
-                borderColor: "#ffffff",
-                "&:hover": {
-                    backgroundColor: "#ffffff",
-                    borderColor: "#ffffff",
-                    color: "#000",
-                },
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
             }}
-            onClick={handleClick}
         >
-            CREATE ACCOUNT
-        </Button>
+            <Button
+                startIcon={<AddIcon />}
+                variant="outlined"
+                size="large"
+                sx={{
+                    color: "#ffffff",
+                    borderColor: "#ffffff",
+                    "&:hover": {
+                        backgroundColor: "#ffffff",
+                        borderColor: "#ffffff",
+                        color: "#000",
+                    },
+                }}
+                onClick={handleClick}
+            >
+                CREATE ACCOUNT
+            </Button>
+        </div>
     );
 };

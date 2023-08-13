@@ -50,14 +50,8 @@ export const Y = ({
     }, [readData, readIsErrror, readIsLoading]);
 
     return (
-        <div style={{ width: "320px", marginTop: "30px" }}>
-            <ModuleManager
-                address={address}
-                yContracts={yContracts}
-                showAlertWithText={showAlertWithText}
-            />
-            <Wall address={address} yContracts={yContracts} />
-            {yContracts.length > 0 || (
+        <div style={{ width: "360px", marginTop: "30px" }}>
+            {yContracts.length == 0 ? (
                 <div
                     style={{
                         display: "flex",
@@ -66,6 +60,19 @@ export const Y = ({
                     }}
                 >
                     <CreateYButton showAlertWithText={showAlertWithText} />
+                </div>
+            ) : (
+                <div>
+                    <Wall
+                        address={address}
+                        yContracts={yContracts}
+                        showAlertWithText={showAlertWithText}
+                    />
+                    <ModuleManager
+                        address={address}
+                        yContracts={yContracts}
+                        showAlertWithText={showAlertWithText}
+                    />
                 </div>
             )}
         </div>

@@ -1,0 +1,38 @@
+<div style="display: flex; flex-direction: column">
+    <textarea
+        style="
+            background-color: transparent;
+            color: white;
+            padding: 0px;
+            width: 100%;
+            height: 140px;
+            border-color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 4px;
+            outline: none;
+        "
+        rows="5"
+        placeholder="What's happening?"
+        oninput="setInputValue(this.value)"
+    ></textarea>
+    <button
+        style="
+            margin-top: 20px;
+            margin-right: 0px;
+            background-color: transparent;
+            border-color: #ffffff;
+            color: white;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 4px;
+            outline: none;
+            cursor: pointer;
+        "
+        onmouseover="this.style.backgroundColor='#ffffff'; this.style.color='#000';"
+        onmouseout="this.style.backgroundColor='transparent'; this.style.color='white';"
+        onclick="handleSubmit()"
+    >
+        Yeet
+    </button>
+</div>

@@ -34,22 +34,42 @@ export const ModuleManager = ({
     });
 
     return (
-        <div style={{ width: "320px", marginTop: "30px" }}>
+        <div style={{ width: "360px", marginTop: "30px" }}>
             {isLoading ? <div>Loading...</div> : null}
-            {modules.length == 0 ? (
-                <AddModule
-                    address={address}
-                    yContracts={yContracts}
-                    showAlertWithText={showAlertWithText}
-                />
-            ) : (
-                <div>
-                    <div>Modules:</div>
-                    {modules.map((moduleAddress, index) => (
-                        <div key={index}>{moduleAddress}</div>
-                    ))}
+            {modules.length == 0 || (
+                <div
+                    style={{
+                        marginBottom: "10px",
+                    }}
+                >
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            fontSize: "30px",
+                            marginBottom: "10px",
+                        }}
+                    >
+                        Modules
+                    </div>
+                    <div
+                        style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            fontSize: "12px",
+                        }}
+                    >
+                        {modules.map((moduleAddress, index) => (
+                            <div key={index}>{moduleAddress}</div>
+                        ))}
+                    </div>
                 </div>
             )}
+            <AddModule
+                address={address}
+                yContracts={yContracts}
+                showAlertWithText={showAlertWithText}
+            />
         </div>
     );
 };
