@@ -4,7 +4,7 @@ import { useAccount } from "wagmi";
 import Alert from "@mui/material/Alert";
 // import Button from "@mui/material/Button";
 
-export const Account = () => {
+export const Profile = () => {
     const { address, isConnecting, isDisconnected } = useAccount();
     const [createdAlert, setCreatedAlert] = useState("");
 

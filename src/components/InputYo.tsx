@@ -1,9 +1,6 @@
-// import { useEffect } from "react";
+import { useEffect } from "react";
 import { useState } from "react";
-import { useAccount, Address } from "wagmi";
-import { createPublicClient, http } from "viem";
-import { createWalletClient, custom } from "viem";
-import { optimism } from "viem/chains";
+import { Address, usePublicClient, useWalletClient } from "wagmi";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 
 import YJson from "../assets/Y.json";
@@ -26,16 +23,20 @@ export const InputYo = ({
     // console.log(`InputYo| yAddress: ${JSON.stringify(yAddress)}`);
     // console.log(`InputYo| yoAddress: ${JSON.stringify(yoAddress)}`);
     const [inputValue, setInputValue] = useState("");
-    const { connector: activeConnector, isConnected } = useAccount();
+
+    const publicClient = usePublicClient();
+    const { data: walletClient } = useWalletClient({
+        onError(error) {
+            console.log("walletClient Error", error);
+        },
+        onSuccess(data) {
+            console.log("walletClient Success", data);
+        },
+    });
 
     const handleClick = async () => {
         console.log(inputValue);
         console.log("InputYo| create clicked");
-
-        const publicClient = createPublicClient({
-            chain: optimism,
-            transport: http(),
-        });
 
         const data = await publicClient.readContract({
             address: yoAddress,
@@ -44,15 +45,9 @@ export const InputYo = ({
             args: [inputValue],
         });
 
-        if (!activeConnector || !isConnected) {
+        if (!walletClient) {
             return;
         }
-        const provider = await activeConnector.getProvider();
-        const walletClient = createWalletClient({
-            account: address,
-            chain: optimism,
-            transport: custom(provider),
-        });
         const response = await walletClient.writeContract({
             address: yAddress,
             abi: YJson.abi,
@@ -63,6 +58,10 @@ export const InputYo = ({
         showAlertWithText("You yeeted a yo!");
         setInputValue("");
     };
+
+    useEffect(() => {
+        console.log(`Address has changed to: ${address}`);
+    }, [address]);
 
     return (
         <div
@@ -77,35 +76,40 @@ export const InputYo = ({
                 multiline
                 rows={3}
                 fullWidth
-                placeholder="What's happening?"
+                placeholder="Yeet anything..."
                 variant="outlined"
                 autoComplete="off"
                 sx={{
                     backgroundColor: "transparent",
-                    color: "#888",
+                    color: "#FFF",
+                    fontFamily: "IBM Plex Mono, monospace",
                     padding: "0px",
                     width: "100%",
                     height: "100px",
                     bgcolor: "black",
                     "& .MuiOutlinedInput-input": {
-                        color: "#888",
+                        color: "#FFF",
+                        fontFamily: "IBM Plex Mono, monospace",
+                    },
+                    "& .MuiOutlinedInput-input::placeholder": {
+                        fontFamily: "IBM Plex Mono, monospace",
                     },
                     "& .MuiOutlinedInput-root": {
                         "& fieldset": {
-                            borderColor: "#888",
+                            borderColor: "#FFF",
                         },
                         "&:hover fieldset": {
-                            borderColor: "#888",
+                            borderColor: "#FFF",
                         },
                         "&.Mui-focused fieldset": {
-                            borderColor: "#888",
+                            borderColor: "#FFF",
                         },
                     },
                     "& .MuiInputLabel-root": {
-                        color: "#888",
+                        color: "#FFF",
                     },
                     "& .MuiInputLabel-root.Mui-focused": {
-                        color: "#888",
+                        color: "#FFF",
                     },
                 }}
             />
@@ -119,12 +123,13 @@ export const InputYo = ({
                     marginRight: "0px",
                     // width: "80px",
                     // marginLeft: "auto",
-                    backgroundColor: "#888",
-                    borderColor: "#888",
+                    backgroundColor: "#FFF",
+                    borderColor: "#FFF",
                     color: "black",
                     fontWeight: "bold",
                     textTransform: "none",
-                    maxWidth: "100px",
+                    maxWidth: "120px",
+                    fontFamily: "IBM Plex Mono, monospace",
                     "&:hover": {
                         backgroundColor: "#888",
                         borderColor: "#888",

@@ -5,8 +5,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 
+import { formatTimestamp } from "../utils/data";
+
 export interface YoYeet {
-    account: string;
+    y: string;
     username: string;
     avatar: string;
     timestamp: number;
@@ -14,19 +16,19 @@ export interface YoYeet {
 }
 
 export const Yo = ({
-    account,
+    profile,
     username,
     avatar,
     timestamp,
     text,
 }: {
-    account: Address;
+    profile: Address;
     username: string;
     avatar: string;
     timestamp: number;
     text: string;
 }) => {
-    useEffect(() => {}, [account, username, avatar, timestamp, text]);
+    useEffect(() => {}, [profile, username, avatar, timestamp, text]);
 
     return (
         <Box
@@ -35,10 +37,9 @@ export const Yo = ({
                 padding: 2,
                 marginTop: "5px",
                 marginBottom: "5px",
-                fontFamily: "Roboto, sans-serif",
                 display: "flex",
                 // border: "1px solid #888",
-                backgroundColor: "#111",
+                backgroundColor: "#101010",
                 position: "relative",
             }}
         >
@@ -47,9 +48,10 @@ export const Yo = ({
                     position: "absolute",
                     top: 14,
                     right: 14,
-                    color: "#888",
-                    fontSize: "10px",
-                    fontFamily: "monospace",
+                    color: "#AFAFAF",
+                    fontSize: "14px",
+                    fontFamily: "Share Tech Mono, monospace",
+                    // fontFamily: "IBM Plex Mono, monospace",
                 }}
             >
                 {formatTimestamp(timestamp)}
@@ -74,50 +76,67 @@ export const Yo = ({
                 />
                 <Box
                     sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
+                        display: "block",
                         marginTop: "20px",
-                        color: "#888",
+                        color: "#AFAFAF",
+                        fontFamily: "Share Tech Mono, monospace",
+                        width: "61px",
+                        overflow: "hidden",
+                        "&:hover": {
+                            cursor: "pointer",
+                        },
+                    }}
+                    onClick={() => {
+                        navigator.clipboard.writeText(profile);
                     }}
                 >
-                    <Typography
-                        sx={{
+                    <span
+                        style={{
+                            display: "inline-block",
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "clip",
                             textAlign: "left",
-                            fontFamily: "monospace",
+                            verticalAlign: "bottom",
                             fontSize: "10px",
-                            width: "24px",
+                            width: "27px",
+                            margin: "0px",
+                            padding: "0px",
                         }}
                     >
-                        {account}
-                    </Typography>
-                    <Typography
-                        sx={{
+                        {profile}
+                    </span>
+                    <span
+                        style={{
+                            display: "inline-block",
                             whiteSpace: "nowrap",
                             overflow: "show",
-                            fontSize: "10px",
-                            fontFamily: "monospace",
-                            width: "18px",
+                            verticalAlign: "bottom",
+                            fontSize: "7px",
+                            width: "12px",
+                            margin: "0px",
+                            padding: "0px",
                         }}
                     >
                         ...
-                    </Typography>
-                    <Typography
-                        sx={{
+                    </span>
+                    <span
+                        style={{
+                            display: "inline-block",
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "clip",
                             textAlign: "left",
-                            fontFamily: "monospace",
+                            verticalAlign: "bottom",
                             fontSize: "10px",
-                            width: "24px",
+                            width: "22px",
+                            margin: "0px",
+                            padding: "0px",
                             direction: "rtl",
                         }}
                     >
-                        {account}
-                    </Typography>
+                        {profile}
+                    </span>
                 </Box>
             </Box>
             <Box sx={{ flex: 5 }}>
@@ -134,9 +153,9 @@ export const Yo = ({
                     <Typography
                         variant="h6"
                         sx={{
-                            color: "#888",
-                            fontSize: "16px",
-                            fontFamily: "Roboto, sans-serif",
+                            color: "#AFAFAF",
+                            fontSize: "14px",
+                            fontFamily: "Share Tech Mono, monospace",
                         }}
                     >
                         {username ? username : "anonymous"}
@@ -147,11 +166,11 @@ export const Yo = ({
                     sx={{
                         marginTop: "10px",
                         fontSize: "14px",
-                        color: "#333",
+                        color: "#FFF",
                         display: "flex",
                         justifyContent: "left",
                         textAlign: "left",
-                        fontFamily: "Roboto, sans-serif",
+                        fontFamily: "IBM Plex Mono, monospace",
                         "&:hover": {
                             cursor: "pointer",
                         },
@@ -163,33 +182,3 @@ export const Yo = ({
         </Box>
     );
 };
-
-function formatTimestamp(timestamp: number): string {
-    const now = Date.now() / 1000; // current time in seconds
-    const diff = now - timestamp; // difference in seconds
-
-    if (diff < 3600) {
-        // 1 hour
-        const minutes = Math.max(Math.round(diff / 60), 1);
-        return `${minutes}m`;
-    } else if (diff < 86400) {
-        // 1 day
-        const hours = Math.max(Math.round(diff / 3600), 1);
-        return `${hours}h`;
-    } else if (diff < 604800) {
-        // 1 week
-        const days = Math.max(Math.round(diff / 86400), 1);
-        return `${days}d`;
-    } else if (diff < 3024000) {
-        // 5 weeks
-        const weeks = Math.max(Math.round(diff / 604800), 1);
-        return `${weeks}w`;
-    } else {
-        const date = new Date(timestamp * 1000);
-        return date.toLocaleDateString("en-US", {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
-        });
-    }
-}

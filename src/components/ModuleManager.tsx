@@ -46,7 +46,8 @@ export const ModuleManager = ({
                     <div
                         style={{
                             display: "flex",
-                            justifyContent: "center",
+                            justifyContent: "left",
+                            fontFamily: "Share Tech Mono, monospace",
                             fontSize: "30px",
                             marginBottom: "10px",
                             color: "#888",
@@ -57,7 +58,8 @@ export const ModuleManager = ({
                     <div
                         style={{
                             display: "flex",
-                            justifyContent: "center",
+                            justifyContent: "left",
+                            fontFamily: "IBM Plex Mono, monospace",
                             fontSize: "12px",
                             color: "#888",
                         }}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { Address } from "wagmi";
-import { createPublicClient, http } from "viem";
-import { optimism } from "viem/chains";
+import { Address, usePublicClient } from "wagmi";
+// import { createPublicClient, http } from "viem";
+// import { optimism } from "viem/chains";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
@@ -26,18 +26,26 @@ export const YHeader = ({
     const [username, setUsername] = useState("");
     const [bio, setBio] = useState("");
 
-    useEffect(() => {
-        const getAccountInfo = async () => {
-            const publicClient = createPublicClient({
-                chain: optimism,
-                transport: http(),
-            });
+    const publicClient = usePublicClient();
+    // const publicClient = useWebSocketPublicClient();
 
+    useEffect(() => {
+        const getProfile = async () => {
+            console.log("YHeader| getProfile: ", publicClient);
+            // const publicClient = createPublicClient({
+            //     chain: optimism,
+            //     transport: http(),
+            // });
+
+            if (!publicClient) {
+                return;
+            }
             const bio = await publicClient.readContract({
                 address: yAddress,
                 abi: YJson.abi,
                 functionName: "bio",
             });
+            console.log("YHeader| bio: ", bio);
             setBio(bio as string);
 
             const avatar = await publicClient.readContract({
@@ -45,6 +53,7 @@ export const YHeader = ({
                 abi: YJson.abi,
                 functionName: "avatar",
             });
+            console.log("YHeader| avatar: ", avatar);
             const avatarMetadataUrl = (avatar as string).replace(
                 "ipfs://",
                 "https://ipfs.io/ipfs/"
@@ -63,9 +72,10 @@ export const YHeader = ({
                 abi: YJson.abi,
                 functionName: "username",
             });
+            console.log("YHeader| username: ", username);
             setUsername(username as string);
         };
-        // getAccountInfo();
+        getProfile();
     }, [yAddress]);
 
     const avatarClick = () => {
@@ -93,10 +103,9 @@ export const YHeader = ({
             sx={{
                 width: 360,
                 padding: 2,
-                fontFamily: "Roboto, sans-serif",
                 display: "flex",
-                border: "1px solid #888",
-                backgroundColor: "#111",
+                // border: "1px solid #888",
+                backgroundColor: "#101010",
             }}
         >
             <BioDialog
@@ -104,12 +113,14 @@ export const YHeader = ({
                 onClose={handleClose}
                 address={address}
                 yAddress={yAddress}
+                startValue={bio}
             />
             <NameDialog
                 open={openDialogUsername}
                 onClose={handleClose}
                 address={address}
                 yAddress={yAddress}
+                startValue={username}
             />
             <AvatarDialog
                 open={openDialogAvatar}
@@ -124,8 +135,8 @@ export const YHeader = ({
                 }}
             >
                 <Avatar
-                    src="https://ipfs.io/ipfs/QmbAhtqQqiSQqwCwQgrRB6urGc3umTskiuVpgX7FvHhutU/2352.png"
-                    // src={avatar}
+                    // src="https://ipfs.io/ipfs/QmbAhtqQqiSQqwCwQgrRB6urGc3umTskiuVpgX7FvHhutU/2352.png"
+                    src={avatar}
                     alt="avatar"
                     sx={{
                         width: 64,
@@ -139,59 +150,71 @@ export const YHeader = ({
                 />
                 <Box
                     sx={{
-                        display: "flex",
-                        justifyContent: "space-between",
+                        display: "block",
                         marginTop: "20px",
-                        color: "#888",
+                        color: "#AFAFAF",
+                        fontFamily: "Share Tech Mono, monospace",
+                        width: "61px",
+                        overflow: "hidden",
+                        "&:hover": {
+                            cursor: "pointer",
+                        },
+                    }}
+                    onClick={() => {
+                        navigator.clipboard.writeText(yAddress);
                     }}
                 >
-                    <Typography
-                        sx={{
+                    <span
+                        style={{
+                            display: "inline-block",
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "clip",
                             textAlign: "left",
-                            fontFamily: "monospace",
+                            verticalAlign: "bottom",
                             fontSize: "10px",
-                            width: "24px",
+                            width: "27px",
+                            margin: "0px",
+                            padding: "0px",
                         }}
                     >
-                        {address
-                            ? address
-                            : "0xbC75bBb748CEEC2E36D07BE92A0663d75ef6635d"}
-                    </Typography>
-                    <Typography
-                        sx={{
+                        {yAddress}
+                    </span>
+                    <span
+                        style={{
+                            display: "inline-block",
                             whiteSpace: "nowrap",
                             overflow: "show",
-                            fontSize: "10px",
-                            fontFamily: "monospace",
-                            width: "18px",
+                            verticalAlign: "bottom",
+                            fontSize: "7px",
+                            width: "12px",
+                            margin: "0px",
+                            padding: "0px",
                         }}
                     >
                         ...
-                    </Typography>
-                    <Typography
-                        sx={{
+                    </span>
+                    <span
+                        style={{
+                            display: "inline-block",
                             whiteSpace: "nowrap",
                             overflow: "hidden",
                             textOverflow: "clip",
                             textAlign: "left",
-                            fontFamily: "monospace",
+                            verticalAlign: "bottom",
                             fontSize: "10px",
-                            width: "24px",
+                            width: "22px",
+                            margin: "0px",
+                            padding: "0px",
                             direction: "rtl",
                         }}
                     >
-                        {address
-                            ? address
-                            : "0xbC75bBb748CEEC2E36D07BE92A0663d75ef6635d"}
-                    </Typography>
+                        {address}
+                    </span>
                 </Box>
             </Box>
             <Box sx={{ flex: 5 }}>
                 <Box
-                    onClick={usernameClick}
                     sx={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -200,35 +223,37 @@ export const YHeader = ({
                             cursor: "pointer",
                         },
                     }}
+                    onClick={usernameClick}
                 >
                     <Typography
                         variant="h6"
                         sx={{
-                            color: "#888",
-                            fontSize: "16px",
-                            fontFamily: "Roboto, sans-serif",
+                            color: "#AFAFAF",
+                            fontSize: "14px",
+                            fontFamily: "Share Tech Mono, monospace",
                         }}
                     >
-                        {username ? username : "seanhart.eth"}
+                        {username ? username : "anonymous"}
                     </Typography>
                 </Box>
                 <Typography
                     variant="body1"
-                    onClick={bioClick}
                     sx={{
                         marginTop: "10px",
                         fontSize: "14px",
-                        color: "#333",
+                        color: "#595959",
                         display: "flex",
                         justifyContent: "left",
                         textAlign: "left",
-                        fontFamily: "Roboto, sans-serif",
+                        fontFamily: "IBM Plex Mono, monospace",
                         "&:hover": {
                             cursor: "pointer",
                         },
                     }}
+                    onClick={bioClick}
                 >
-                    {bio ? bio : "hacking on Y - The Everything Protocol"}
+                    {/* {bio ? bio : "hacking on Y - The Everything Protocol"} */}
+                    {bio ? bio : "anonymous on Y"}
                 </Typography>
             </Box>
         </Box>

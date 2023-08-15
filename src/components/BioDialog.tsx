@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useAccount, Address } from "wagmi";
-import { createWalletClient, custom } from "viem";
-import { optimism } from "viem/chains";
+import React, { useState, useEffect } from "react";
+import { useWalletClient, Address } from "wagmi";
+// import { createWalletClient, custom } from "viem";
+// import { optimism } from "viem/chains";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -16,14 +16,17 @@ export const BioDialog = ({
     onClose,
     address,
     yAddress,
+    startValue,
 }: {
     open: boolean;
     onClose: () => void;
     address: Address;
     yAddress: Address;
+    startValue: string;
 }) => {
-    const [inputValue, setInputValue] = useState("");
-    const { connector: activeConnector, isConnected } = useAccount();
+    const [inputValue, setInputValue] = useState(startValue);
+    // const { connector: activeConnector, isConnected } = useAccount();
+    const { data: walletClient } = useWalletClient();
 
     const handleClose = () => {
         onClose();
@@ -31,15 +34,18 @@ export const BioDialog = ({
 
     const handleSave = async () => {
         console.log(inputValue);
-        if (!activeConnector || !isConnected) {
+        if (!walletClient) {
             return;
         }
-        const provider = await activeConnector.getProvider();
-        const walletClient = createWalletClient({
-            account: address,
-            chain: optimism,
-            transport: custom(provider),
-        });
+        // if (!activeConnector || !isConnected) {
+        //     return;
+        // }
+        // const provider = await activeConnector.getProvider();
+        // const walletClient = createWalletClient({
+        //     account: address,
+        //     chain: optimism,
+        //     transport: custom(provider),
+        // });
         const response = await walletClient.writeContract({
             address: yAddress,
             abi: YJson.abi,
@@ -54,6 +60,8 @@ export const BioDialog = ({
         setInputValue(event.target.value);
     };
 
+    useEffect(() => {}, [address, inputValue]);
+
     return (
         <Dialog
             open={open}
@@ -64,7 +72,7 @@ export const BioDialog = ({
                     height: "260px",
                 },
                 "& .MuiPaper-root": {
-                    background: "#222",
+                    background: "#252525",
                 },
                 "& .MuiBackdrop-root": {
                     backgroundColor: "transparent",
@@ -73,7 +81,7 @@ export const BioDialog = ({
         >
             <DialogTitle
                 sx={{
-                    color: "#666",
+                    color: "#AFAFAF",
                 }}
             >
                 Edit your bio
@@ -95,7 +103,7 @@ export const BioDialog = ({
                     inputProps={{ maxLength: 120 }}
                     InputProps={{
                         style: {
-                            color: "#666",
+                            color: "#AFAFAF",
                             height: "100px",
                             fontSize: "14px",
                         },
@@ -105,14 +113,14 @@ export const BioDialog = ({
                         bgcolor: "#111",
                         "& .MuiOutlinedInput-root": {
                             "& fieldset": {
-                                borderColor: "#222",
+                                borderColor: "#252525",
                             },
                             "&.Mui-focused fieldset": {
-                                borderColor: "#333",
+                                borderColor: "#AFAFAF",
                             },
                         },
                         "& .MuiInputBase-input::placeholder": {
-                            color: "#666",
+                            color: "#AFAFAF",
                         },
                     }}
                 />

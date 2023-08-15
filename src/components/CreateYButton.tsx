@@ -5,8 +5,10 @@ import YFactoryJson from "../assets/YFactory.json";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
+// const YFactoryAddress = import.meta.env
+//     .VITE_Y_FACTORY_ADDRESS_OPTIMISM as Address;
 const YFactoryAddress = import.meta.env
-    .VITE_Y_FACTORY_ADDRESS_OPTIMISM as Address;
+    .VITE_Y_FACTORY_ADDRESS_OPTIMISM_GOERLI as Address;
 
 export const CreateYButton = ({
     showAlertWithText,
@@ -46,7 +48,7 @@ export const CreateYButton = ({
         // console.log(`CreateYButton| isLoading: ${isLoading}`);
         // console.log(`CreateYButton| isSuccess: ${isSuccess}`);
         if (isSuccess) {
-            showAlertWithText("You created a new Y account!");
+            showAlertWithText("You created a new Y profile!");
         }
     }, [isLoading, isSuccess]);
 
@@ -72,7 +74,7 @@ export const CreateYButton = ({
                 }}
                 onClick={handleClick}
             >
-                CREATE ACCOUNT
+                CREATE PROFILE
             </Button>
         </div>
     );

@@ -1,7 +1,7 @@
-import React, { useState } from "react";
-import { useAccount, Address } from "wagmi";
-import { createWalletClient, custom } from "viem";
-import { optimism } from "viem/chains";
+import React, { useState, useEffect } from "react";
+import { Address, useWalletClient } from "wagmi";
+// import { createWalletClient, custom } from "viem";
+// import { optimism } from "viem/chains";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -24,7 +24,8 @@ export const AvatarDialog = ({
 }) => {
     const [nftAddress, setNftAddress] = useState("");
     const [tokenID, setTokenID] = useState("");
-    const { connector: activeConnector, isConnected } = useAccount();
+    // const { connector: activeConnector, isConnected } = useAccount();
+    const { data: walletClient } = useWalletClient();
 
     const handleClose = () => {
         onClose();
@@ -33,15 +34,18 @@ export const AvatarDialog = ({
     const handleSave = async () => {
         console.log(nftAddress);
         console.log(tokenID);
-        if (!activeConnector || !isConnected) {
+        if (!walletClient) {
             return;
         }
-        const provider = await activeConnector.getProvider();
-        const walletClient = createWalletClient({
-            account: address,
-            chain: optimism,
-            transport: custom(provider),
-        });
+        // if (!activeConnector || !isConnected) {
+        //     return;
+        // }
+        // const provider = await activeConnector.getProvider();
+        // const walletClient = createWalletClient({
+        //     account: address,
+        //     chain: optimism,
+        //     transport: custom(provider),
+        // });
         const response = await walletClient.writeContract({
             address: yAddress,
             abi: YJson.abi,
@@ -62,6 +66,8 @@ export const AvatarDialog = ({
     ) => {
         setTokenID(event.target.value);
     };
+
+    useEffect(() => {}, [address]);
 
     return (
         <Dialog

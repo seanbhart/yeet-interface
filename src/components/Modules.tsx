@@ -2,13 +2,12 @@
 import { useState } from "react";
 import { Address, useContractRead } from "wagmi";
 
+// import { formatTimestamp } from "../utils/data";
 import { Yo, YoYeet } from "./Yo";
 import { InputYo } from "./InputYo";
 import YJson from "../assets/Y.json";
 
-const YoAddress = import.meta.env.VITE_YO_ADDRESS_OPTIMISM as Address;
-
-export const Wall = ({
+export const Modules = ({
     address,
     yContracts,
     showAlertWithText,
@@ -19,8 +18,10 @@ export const Wall = ({
 }) => {
     // console.log(`Wall| yContractAddress: ${JSON.stringify(yContracts)}`);
     const earliestTimestamp = 1234567890;
-    const [modulesExist, setModulesExist] = useState(false);
+    const [contentExists, setContentExists] = useState(false);
+    const [modules, setModules] = useState<Address[]>([]);
     const [wall, setWall] = useState<Array<JSX.Element>>([]);
+    // const [wallHtml, setWallHtml] = useState("");
     // console.log(`Wall| wall: ${wall}`);
 
     // const [wall, setWall] = useState("");
@@ -54,7 +55,7 @@ export const Wall = ({
     //         });
     // }, []);
 
-    // const { isLoading } = useContractRead({
+    // const wallsReadResult = useContractRead({
     //     address: yContracts[0],
     //     abi: YJson.abi,
     //     functionName: "walls",
@@ -91,15 +92,32 @@ export const Wall = ({
 
     //         // Convert the Document object back to a string
     //         const newHtmlContent = new XMLSerializer().serializeToString(doc);
-    //         setWall(newHtmlContent);
+    //         setWallHtml(newHtmlContent);
     //     },
     // });
+    // console.log(`Wall| wallsReadResult: ${JSON.stringify(wallsReadResult)}`);
+
+    const { isSuccess: isSuccessModules } = useContractRead({
+        address: yContracts[0],
+        abi: YJson.abi,
+        functionName: "getModules",
+        account: address,
+        watch: true,
+        onError(error) {
+            console.log("Wall| getModules Error", error);
+        },
+        onSuccess(data) {
+            console.log("Wall| getModules Success", data);
+            setModules(data as Address[]);
+        },
+    });
 
     const { isLoading } = useContractRead({
+        enabled: isSuccessModules && modules.length > 0, // Only run if getModules succeeded and modules haven't been added yet
         address: yContracts[0],
         abi: YJson.abi,
         functionName: "recentJson",
-        args: [YoAddress, earliestTimestamp],
+        args: [modules[0], earliestTimestamp],
         account: address,
         watch: true,
         onError(error) {
@@ -109,14 +127,14 @@ export const Wall = ({
             // console.log("Wall| Success", data);
             // A special check if no modules have been added
             if (data === "no modules") {
-                setModulesExist(false);
+                setContentExists(false);
                 return;
             }
             if (data === "no content" || data === "" || !data) {
-                setModulesExist(false);
+                setContentExists(false);
                 return;
             }
-            setModulesExist(true);
+            setContentExists(true);
             // console.log(`Wall| data: ${data}`);
 
             // Parse the JSON data into an array of objects
@@ -130,6 +148,7 @@ export const Wall = ({
             // console.log(`Wall| yeets: ${JSON.stringify(yeets)}`);
 
             yeets.sort((a, b) => {
+                // return a.timestamp - b.timestamp;
                 return b.timestamp - a.timestamp;
             });
 
@@ -153,7 +172,7 @@ export const Wall = ({
 
                 const yoComponent = (
                     <Yo
-                        account={yeet.account as Address}
+                        profile={yeet.y as Address}
                         username={yeet.username}
                         avatar={imageUrl}
                         timestamp={yeet.timestamp}
@@ -165,6 +184,7 @@ export const Wall = ({
 
             Promise.all(promises).then((newWall) => {
                 // console.log(`Wall| newWall: ${newWall}`);
+                // newWall.splice(0, 5);
                 setWall(newWall);
             });
         },
@@ -172,12 +192,12 @@ export const Wall = ({
 
     return (
         <div>
-            {modulesExist && (
+            {contentExists && (
                 <div style={{ marginTop: "50px" }}>
                     <InputYo
                         address={address}
                         yAddress={yContracts[0]}
-                        yoAddress={YoAddress}
+                        yoAddress={modules[0]}
                         showAlertWithText={showAlertWithText}
                     />
                 </div>
@@ -186,16 +206,6 @@ export const Wall = ({
                 <div>Loading...</div>
             ) : (
                 wall.length > 0 && (
-                    // <div
-                    //     style={{
-                    //         display: "flex",
-                    //         justifyContent: "center",
-                    //         marginTop: "50px",
-                    //         marginBottom: "50px",
-                    //         marginLeft: "-20px",
-                    //     }}
-                    //     // dangerouslySetInnerHTML={{ __html: wall }}
-                    // />
                     <div
                         style={{
                             display: "flex",
@@ -210,37 +220,16 @@ export const Wall = ({
                     </div>
                 )
             )}
-            {/* <div dangerouslySetInnerHTML={{ __html: htmlContent }}></div> */}
+            {/* <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "50px",
+                    marginBottom: "50px",
+                    marginLeft: "-20px",
+                }}
+                dangerouslySetInnerHTML={{ __html: wallHtml }}
+            /> */}
         </div>
     );
 };
-
-// function formatTimestamp(timestamp: number): string {
-//     const now = Date.now() / 1000; // current time in seconds
-//     const diff = now - timestamp; // difference in seconds
-
-//     if (diff < 3600) {
-//         // 1 hour
-//         const minutes = Math.max(Math.round(diff / 60), 1);
-//         return `${minutes}m`;
-//     } else if (diff < 86400) {
-//         // 1 day
-//         const hours = Math.max(Math.round(diff / 3600), 1);
-//         return `${hours}h`;
-//     } else if (diff < 604800) {
-//         // 1 week
-//         const days = Math.max(Math.round(diff / 86400), 1);
-//         return `${days}d`;
-//     } else if (diff < 3024000) {
-//         // 5 weeks
-//         const weeks = Math.max(Math.round(diff / 604800), 1);
-//         return `${weeks}w`;
-//     } else {
-//         const date = new Date(timestamp * 1000);
-//         return date.toLocaleDateString("en-US", {
-//             month: "short",
-//             day: "numeric",
-//             year: "numeric",
-//         });
-//     }
-// }

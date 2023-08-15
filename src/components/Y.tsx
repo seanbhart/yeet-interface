@@ -3,14 +3,16 @@ import { useEffect, useState } from "react";
 // import { Address, useContractWrite } from "wagmi";
 import { Address, useContractRead } from "wagmi";
 
-import { Wall } from "./Wall";
+import { Modules } from "./Modules";
 import { YHeader } from "./YHeader";
 import { CreateYButton } from "./CreateYButton";
 import { ModuleManager } from "./ModuleManager";
 import YFactoryJson from "../assets/YFactory.json";
 
+// const YFactoryAddress = import.meta.env
+//     .VITE_Y_FACTORY_ADDRESS_OPTIMISM as Address;
 const YFactoryAddress = import.meta.env
-    .VITE_Y_FACTORY_ADDRESS_OPTIMISM as Address;
+    .VITE_Y_FACTORY_ADDRESS_OPTIMISM_GOERLI as Address;
 
 export const Y = ({
     address,
@@ -21,6 +23,7 @@ export const Y = ({
 }) => {
     const [yContracts, setYContracts] = useState<Address[]>([]);
 
+    // console.log(`Y| YFactoryAddress: ${JSON.stringify(YFactoryAddress)}`);
     const {
         data: readData,
         isError: readIsErrror,
@@ -56,7 +59,7 @@ export const Y = ({
             ) : (
                 <div style={{ marginTop: "50px", marginBottom: "100px" }}>
                     <YHeader address={address} yAddress={yContracts[0]} />
-                    <Wall
+                    <Modules
                         address={address}
                         yContracts={yContracts}
                         showAlertWithText={showAlertWithText}

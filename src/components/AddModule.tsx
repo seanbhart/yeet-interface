@@ -7,8 +7,6 @@ import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
 
-// const YoAddress = import.meta.env.VITE_YO_ADDRESS_OPTIMISM as Address;
-
 export const AddModule = ({
     address,
     yContracts,
@@ -80,27 +78,31 @@ export const AddModule = ({
                 spellCheck={false}
                 color="primary"
                 sx={{
-                    color: "#888",
+                    fontFamily: "IBM Plex Mono, monospace",
+                    color: "#AFAFAF",
                     bgcolor: "black",
                     "& .MuiOutlinedInput-input": {
-                        color: "#888",
+                        fontFamily: "IBM Plex Mono, monospace",
+                        color: "#AFAFAF",
                     },
                     "& .MuiOutlinedInput-root": {
                         "& fieldset": {
-                            borderColor: "#888",
+                            borderColor: "#AFAFAF",
                         },
                         "&:hover fieldset": {
-                            borderColor: "#888",
+                            borderColor: "#AFAFAF",
                         },
                         "&.Mui-focused fieldset": {
-                            borderColor: "#888",
+                            borderColor: "#AFAFAF",
                         },
                     },
                     "& .MuiInputLabel-root": {
-                        color: "#888",
+                        fontFamily: "IBM Plex Mono, monospace",
+                        color: "#AFAFAF",
                     },
                     "& .MuiInputLabel-root.Mui-focused": {
-                        color: "#888",
+                        fontFamily: "IBM Plex Mono, monospace",
+                        color: "#AFAFAF",
                     },
                 }}
             />
@@ -110,15 +112,16 @@ export const AddModule = ({
                 variant="outlined"
                 size="large"
                 sx={{
-                    color: "#888",
+                    color: "#AFAFAF",
+                    fontFamily: "IBM Plex Mono, monospace",
                     fontWeight: "bold",
-                    borderColor: "#888",
+                    borderColor: "#AFAFAF",
                     textTransform: "none",
                     maxWidth: "100px",
                     height: "40px",
                     "&:hover": {
-                        backgroundColor: "#888",
-                        borderColor: "#888",
+                        backgroundColor: "#AFAFAF",
+                        borderColor: "#AFAFAF",
                         color: "#000",
                     },
                 }}
