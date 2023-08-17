@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Address, useContractRead } from "wagmi";
 
 import { AddModule } from "./AddModule";
-import YJson from "../assets/Y.json";
+import YJson from "../../assets/Y.json";
 
 export const ModuleManager = ({
     address,

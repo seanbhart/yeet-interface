@@ -9,7 +9,7 @@ import { BioDialog } from "./BioDialog";
 import { NameDialog } from "./NameDialog";
 import { AvatarDialog } from "./AvatarDialog";
 
-import YJson from "../assets/Y.json";
+import YJson from "../../assets/Y.json";
 
 export const YHeader = ({
     address,
@@ -31,12 +31,6 @@ export const YHeader = ({
 
     useEffect(() => {
         const getProfile = async () => {
-            console.log("YHeader| getProfile: ", publicClient);
-            // const publicClient = createPublicClient({
-            //     chain: optimism,
-            //     transport: http(),
-            // });
-
             if (!publicClient) {
                 return;
             }
@@ -45,7 +39,6 @@ export const YHeader = ({
                 abi: YJson.abi,
                 functionName: "bio",
             });
-            console.log("YHeader| bio: ", bio);
             setBio(bio as string);
 
             const avatar = await publicClient.readContract({
@@ -53,7 +46,6 @@ export const YHeader = ({
                 abi: YJson.abi,
                 functionName: "avatar",
             });
-            console.log("YHeader| avatar: ", avatar);
             const avatarMetadataUrl = (avatar as string).replace(
                 "ipfs://",
                 "https://ipfs.io/ipfs/"
@@ -72,7 +64,6 @@ export const YHeader = ({
                 abi: YJson.abi,
                 functionName: "username",
             });
-            console.log("YHeader| username: ", username);
             setUsername(username as string);
         };
         getProfile();

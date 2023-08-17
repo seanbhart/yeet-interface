@@ -5,7 +5,7 @@ import { Address, useContractRead } from "wagmi";
 // import { formatTimestamp } from "../utils/data";
 import { Yo, YoYeet } from "./Yo";
 import { InputYo } from "./InputYo";
-import YJson from "../assets/Y.json";
+import YJson from "../../assets/Y.json";
 
 export const Modules = ({
     address,

@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 // import { Address, useContractWrite } from "wagmi";
 import { Address, useContractRead } from "wagmi";
 
-import { Modules } from "./Modules";
+import { Modules } from "../module/Modules";
 import { YHeader } from "./YHeader";
 import { CreateYButton } from "./CreateYButton";
-import { ModuleManager } from "./ModuleManager";
-import YFactoryJson from "../assets/YFactory.json";
+import { ModuleManager } from "../module/ModuleManager";
+import YFactoryJson from "../../assets/YFactory.json";
 
 // const YFactoryAddress = import.meta.env
 //     .VITE_Y_FACTORY_ADDRESS_OPTIMISM as Address;

@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 
-import YJson from "../assets/Y.json";
+import YJson from "../../assets/Y.json";
 
 export const BioDialog = ({
     open,

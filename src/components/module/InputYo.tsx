@@ -3,8 +3,8 @@ import { useState } from "react";
 import { Address, usePublicClient, useWalletClient } from "wagmi";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 
-import YJson from "../assets/Y.json";
-import YoJson from "../assets/Yo.json";
+import YJson from "../../assets/Y.json";
+import YoJson from "../../assets/Yo.json";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 

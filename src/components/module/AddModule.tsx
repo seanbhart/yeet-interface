@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Address, useContractWrite, usePrepareContractWrite } from "wagmi";
 import { isAddress } from "viem";
 
-import YJson from "../assets/Y.json";
+import YJson from "../../assets/Y.json";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import TextField from "@mui/material/TextField";
@@ -21,6 +21,7 @@ export const AddModule = ({
     const [moduleAddress, setModuleAddress] = useState("");
 
     const { config } = usePrepareContractWrite({
+        enabled: moduleAddress.startsWith("0x") && isAddress(moduleAddress),
         address: yContracts[0],
         abi: YJson.abi,
         functionName: "addModule",

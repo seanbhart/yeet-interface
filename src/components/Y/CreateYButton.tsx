@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { Address, useContractWrite, usePrepareContractWrite } from "wagmi";
 
-import YFactoryJson from "../assets/YFactory.json";
+import YFactoryJson from "../../assets/YFactory.json";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 
@@ -15,10 +15,6 @@ export const CreateYButton = ({
 }: {
     showAlertWithText: (text: string) => void;
 }) => {
-    console.log(
-        `CreateYButton| YFactoryAddress: ${JSON.stringify(YFactoryAddress)}`
-    );
-
     const { config } = usePrepareContractWrite({
         address: YFactoryAddress,
         abi: YFactoryJson.abi,

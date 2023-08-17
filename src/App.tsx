@@ -19,7 +19,8 @@ import "./App.css";
 
 const ALCHEMY_KEY = import.meta.env.VITE_ALCHEMY_KEY;
 const WALLETCONNECT_PROJECT_ID = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
-// const INFURA_OPTIMISM_GOERLI_KEY = import.meta.env.VITE_INFURA_OPTIMISM_GOERLI_KEY;
+const INFURA_OPTIMISM_GOERLI_KEY = import.meta.env
+    .VITE_INFURA_OPTIMISM_GOERLI_KEY;
 
 const optimismGoerli: Chain = {
     id: 420,
@@ -34,12 +35,15 @@ const optimismGoerli: Chain = {
     },
     rpcUrls: {
         public: {
-            http: ["https://goerli.optimism.io"],
+            // http: ["https://goerli.optimism.io"],
+            http: [
+                `https://optimism-goerli.infura.io/v3/${INFURA_OPTIMISM_GOERLI_KEY}`,
+            ],
         },
         default: {
+            // http: ["https://goerli.optimism.io"],
             http: [
-                "https://goerli.optimism.io",
-                // `https://optimism-goerli.infura.io/v3/${INFURA_OPTIMISM_GOERLI_KEY}`,
+                `https://optimism-goerli.infura.io/v3/${INFURA_OPTIMISM_GOERLI_KEY}`,
             ],
         },
     },

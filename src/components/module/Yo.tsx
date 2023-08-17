@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 
-import { formatTimestamp } from "../utils/data";
+import { formatTimestamp } from "../../utils/data";
 
 export interface YoYeet {
     y: string;
