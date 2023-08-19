@@ -3,6 +3,7 @@ import { Profile } from "./components/Profile";
 // import { Footer } from "./components/Footer";
 
 import { yeetTheme } from "./rainbowkitTheme";
+import { WagmiContractsProvider } from "./assets/WagmiContractsProvider";
 // import "./App.css";
 
 import "@rainbow-me/rainbowkit/styles.css";
@@ -80,12 +81,18 @@ function App() {
     return (
         <>
             <WagmiConfig config={wagmiConfig}>
-                <RainbowKitProvider coolMode chains={chains} theme={yeetTheme}>
-                    <div className="App">
-                        <Header />
-                        <Profile />
-                    </div>
-                </RainbowKitProvider>
+                <WagmiContractsProvider>
+                    <RainbowKitProvider
+                        coolMode
+                        chains={chains}
+                        theme={yeetTheme}
+                    >
+                        <div className="App">
+                            <Header />
+                            <Profile />
+                        </div>
+                    </RainbowKitProvider>
+                </WagmiContractsProvider>
             </WagmiConfig>
         </>
     );

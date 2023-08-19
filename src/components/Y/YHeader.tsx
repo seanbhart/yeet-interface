@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
-import { Address, usePublicClient } from "wagmi";
-// import { createPublicClient, http } from "viem";
-// import { optimism } from "viem/chains";
+import { Address } from "wagmi";
+import { useContracts } from "../../assets/WagmiContractsProvider";
+
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import { BioDialog } from "./BioDialog";
 import { NameDialog } from "./NameDialog";
 import { AvatarDialog } from "./AvatarDialog";
-
-import YJson from "../../assets/Y.json";
 
 export const YHeader = ({
     address,
@@ -18,7 +16,6 @@ export const YHeader = ({
     address: Address;
     yAddress: Address;
 }) => {
-    // const { connector: activeConnector, isConnected } = useAccount();
     const [openDialogBio, setOpenDialogBio] = useState(false);
     const [openDialogUsername, setOpenDialogUsername] = useState(false);
     const [openDialogAvatar, setOpenDialogAvatar] = useState(false);
@@ -26,26 +23,14 @@ export const YHeader = ({
     const [username, setUsername] = useState("");
     const [bio, setBio] = useState("");
 
-    const publicClient = usePublicClient();
-    // const publicClient = useWebSocketPublicClient();
+    const contracts = useContracts();
 
     useEffect(() => {
         const getProfile = async () => {
-            if (!publicClient) {
-                return;
-            }
-            const bio = await publicClient.readContract({
-                address: yAddress,
-                abi: YJson.abi,
-                functionName: "bio",
-            });
+            const bio = await contracts.Y(yAddress).bio();
             setBio(bio as string);
 
-            const avatar = await publicClient.readContract({
-                address: yAddress,
-                abi: YJson.abi,
-                functionName: "avatar",
-            });
+            const avatar = await contracts.Y(yAddress).avatar();
             const avatarMetadataUrl = (avatar as string).replace(
                 "ipfs://",
                 "https://ipfs.io/ipfs/"
@@ -59,11 +44,7 @@ export const YHeader = ({
             );
             setAvatar(imageUrl);
 
-            const username = await publicClient.readContract({
-                address: yAddress,
-                abi: YJson.abi,
-                functionName: "username",
-            });
+            const username = await contracts.Y(yAddress).username();
             setUsername(username as string);
         };
         getProfile();

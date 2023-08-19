@@ -1,10 +1,8 @@
-import { useEffect } from "react";
-import { useState } from "react";
-import { Address, usePublicClient, useWalletClient } from "wagmi";
+import { useEffect, useState } from "react";
+import { Address } from "wagmi";
+import { useContracts } from "../../assets/WagmiContractsProvider";
 import TrendingFlatIcon from "@mui/icons-material/TrendingFlat";
 
-import YJson from "../../assets/Y.json";
-import YoJson from "../../assets/Yo.json";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
@@ -23,38 +21,15 @@ export const InputYo = ({
     // console.log(`InputYo| yAddress: ${JSON.stringify(yAddress)}`);
     // console.log(`InputYo| yoAddress: ${JSON.stringify(yoAddress)}`);
     const [inputValue, setInputValue] = useState("");
-
-    const publicClient = usePublicClient();
-    const { data: walletClient } = useWalletClient({
-        onError(error) {
-            console.log("walletClient Error", error);
-        },
-        onSuccess(data) {
-            console.log("walletClient Success", data);
-        },
-    });
+    const contracts = useContracts();
 
     const handleClick = async () => {
-        console.log(inputValue);
-        console.log("InputYo| create clicked");
+        console.log(`InputYo| inputValue: ${inputValue}`);
 
-        const data = await publicClient.readContract({
-            address: yoAddress,
-            abi: YoJson.abi,
-            functionName: "serialize",
-            args: [inputValue],
-        });
+        const data = await contracts.Yo(yoAddress).serialize(inputValue);
+        console.log(`InputYo| data: ${data}`);
 
-        if (!walletClient) {
-            return;
-        }
-        const response = await walletClient.writeContract({
-            address: yAddress,
-            abi: YJson.abi,
-            functionName: "yeet",
-            args: [yoAddress, data],
-        });
-        console.log(`InputYo| YEET RESPONSE: ${response}`);
+        await contracts.Y(yAddress).yeet(yoAddress, data);
         showAlertWithText("You yeeted a yo!");
         setInputValue("");
     };

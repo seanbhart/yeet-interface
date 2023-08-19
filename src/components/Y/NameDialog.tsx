@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { useWalletClient, Address } from "wagmi";
-// import { createWalletClient, custom } from "viem";
-// import { optimism } from "viem/chains";
+import { Address } from "wagmi";
+import { useContracts } from "../../assets/WagmiContractsProvider";
+
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-
-import YJson from "../../assets/Y.json";
 
 export const NameDialog = ({
     open,
@@ -25,34 +23,15 @@ export const NameDialog = ({
     startValue: string;
 }) => {
     const [inputValue, setInputValue] = useState(startValue);
-    // const { connector: activeConnector, isConnected } = useAccount();
-    const { data: walletClient } = useWalletClient();
+    const contracts = useContracts();
 
     const handleClose = () => {
         onClose();
     };
 
     const handleSave = async () => {
-        console.log(inputValue);
-        if (!walletClient) {
-            return;
-        }
-        // if (!activeConnector || !isConnected) {
-        //     return;
-        // }
-        // const provider = await activeConnector.getProvider();
-        // const walletClient = createWalletClient({
-        //     account: address,
-        //     chain: optimism,
-        //     transport: custom(provider),
-        // });
-        const response = await walletClient.writeContract({
-            address: yAddress,
-            abi: YJson.abi,
-            functionName: "setUsername",
-            args: [inputValue],
-        });
-        console.log("InputYo| response: ", response);
+        console.log("setting name to: ", inputValue);
+        await contracts.Y(yAddress).setUsername(inputValue);
         onClose();
     };
 

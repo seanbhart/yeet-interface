@@ -1,15 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Address, useWalletClient } from "wagmi";
-// import { createWalletClient, custom } from "viem";
-// import { optimism } from "viem/chains";
+import { Address } from "wagmi";
+import { useContracts } from "../../assets/WagmiContractsProvider";
+
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-
-import YJson from "../../assets/Y.json";
 
 export const AvatarDialog = ({
     open,
@@ -22,49 +20,29 @@ export const AvatarDialog = ({
     address: Address;
     yAddress: Address;
 }) => {
-    const [nftAddress, setNftAddress] = useState("");
-    const [tokenID, setTokenID] = useState("");
-    // const { connector: activeConnector, isConnected } = useAccount();
-    const { data: walletClient } = useWalletClient();
+    const [nftAddress, setNftAddress] = useState<Address>("0x000000");
+    const [tokenID, setTokenID] = useState(BigInt(0));
+    const contracts = useContracts();
 
     const handleClose = () => {
         onClose();
     };
 
     const handleSave = async () => {
-        console.log(nftAddress);
-        console.log(tokenID);
-        if (!walletClient) {
-            return;
-        }
-        // if (!activeConnector || !isConnected) {
-        //     return;
-        // }
-        // const provider = await activeConnector.getProvider();
-        // const walletClient = createWalletClient({
-        //     account: address,
-        //     chain: optimism,
-        //     transport: custom(provider),
-        // });
-        const response = await walletClient.writeContract({
-            address: yAddress,
-            abi: YJson.abi,
-            functionName: "setAvatar",
-            args: [nftAddress as Address, tokenID],
-        });
-        console.log("InputYo| response: ", response);
+        console.log("nftAddress and tokenID: ", nftAddress, tokenID);
+        await contracts.Y(yAddress).setAvatar(nftAddress, tokenID);
         onClose();
     };
 
     const handleNftAddressChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setNftAddress(event.target.value);
+        setNftAddress(event.target.value as Address);
     };
     const handleTokenIdChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setTokenID(event.target.value);
+        setTokenID(BigInt(event.target.value));
     };
 
     useEffect(() => {}, [address]);
