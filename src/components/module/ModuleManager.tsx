@@ -1,8 +1,6 @@
-import { useState, useEffect } from "react";
-import { Address, useContractRead } from "wagmi";
-
+import { Address } from "wagmi";
+import { useContracts } from "../../assets/WagmiContractsProvider";
 import { AddModule } from "./AddModule";
-import YJson from "../../assets/Y.json";
 
 export const ModuleManager = ({
     address,
@@ -13,31 +11,15 @@ export const ModuleManager = ({
     yContracts: Address[];
     showAlertWithText: (text: string) => void;
 }) => {
-    const [modules, setModules] = useState([] as Address[]);
-    // console.log(`ModuleManager| yContracts: ${yContracts}`);
-    // console.log(`ModuleManager| modules length: ${modules.length}`);
-
-    const { isLoading } = useContractRead({
-        address: yContracts[0],
-        abi: YJson.abi,
-        functionName: "getModules",
-        account: address,
+    const contracts = useContracts();
+    const modules = contracts.Y(yContracts[0]).getModules.useRead({
         watch: true,
-        onError(error) {
-            console.log("ModuleManager| Error", error);
-        },
-        onSuccess(data) {
-            console.log("ModuleManager| Success", data);
-            setModules(data as Address[]);
-        },
     });
-
-    useEffect(() => {}, [modules]);
 
     return (
         <div style={{ width: "360px", marginTop: "30px" }}>
-            {isLoading ? <div>Loading...</div> : null}
-            {modules.length == 0 || (
+            {modules.isLoading || !modules.data ? <div>Loading...</div> : null}
+            {(modules.data && modules.data.length === 0) || (
                 <div
                     style={{
                         marginBottom: "10px",
@@ -64,9 +46,10 @@ export const ModuleManager = ({
                             color: "#888",
                         }}
                     >
-                        {modules.map((moduleAddress, index) => (
-                            <div key={index}>{moduleAddress}</div>
-                        ))}
+                        {modules.data &&
+                            modules.data.map((moduleAddress, index) => (
+                                <div key={index}>{moduleAddress}</div>
+                            ))}
                     </div>
                 </div>
             )}
